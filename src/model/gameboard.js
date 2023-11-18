@@ -19,7 +19,7 @@ export default class GameBoard {
     new Ship(1),
   ];
 
-  _board = Array.from({ length: 10 }, (_) =>
+  #board = Array.from({ length: 10 }, (_) =>
     Array.from({ length: 10 }, (_, i) => null)
   );
 
@@ -37,7 +37,7 @@ export default class GameBoard {
 
   get board() {
     const copyOfBoard = [];
-    for (const row of this._board) {
+    for (const row of this.#board) {
       copyOfBoard.push([...row]);
     }
     return copyOfBoard;
@@ -51,15 +51,15 @@ export default class GameBoard {
   }
 
   receiveAttack(x, y) {
-    if (this._board[x][y]) {
+    if (this.#board[x][y]) {
       return false;
     }
 
     if (this.#shipsPlacement[x][y]) {
       this.#shipsPlacement[x][y].hit();
-      this._board[x][y] = cellState.hit;
+      this.#board[x][y] = cellState.hit;
     } else {
-      this._board[x][y] = cellState.miss;
+      this.#board[x][y] = cellState.miss;
     }
     return true;
   }
