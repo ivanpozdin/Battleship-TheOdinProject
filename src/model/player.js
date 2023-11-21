@@ -1,15 +1,18 @@
 export default class {
   #enemyGameBoard;
   #gameBoard;
+
   constructor(gameBoard, enemyGameBoard) {
     this.#gameBoard = gameBoard;
     this.#enemyGameBoard = enemyGameBoard;
+    this.isAttacking = false;
   }
 
   attack(coords = null) {
     const { x, y } = coords || this.#randomEmptyCell;
+    if (!this.#enemyGameBoard.receiveAttack(x, y)) return false;
 
-    return this.#enemyGameBoard.receiveAttack(x, y);
+    return { x, y };
   }
 
   get #randomEmptyCell() {
