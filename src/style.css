@@ -1,0 +1,59 @@
+:root {
+  font-size: 62.5%;
+}
+
+h1 {
+  text-align: center;
+  font-size: 5rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #e1464fff;
+}
+
+.cell {
+  width: 3rem;
+  height: 3rem;
+  background-color: lightblue;
+  border: 1px black solid;
+}
+
+.empty-cell {
+  background-color: lightblue;
+}
+
+.ship-open-cell {
+  background-color: cadetblue;
+}
+
+.ship-hit-cell {
+  background-color: #e1464fff;
+}
+
+.ship-miss-cell {
+  background-color: rgb(244, 255, 28);
+}
+
+.player-hit-ship {
+  background-color: rgb(122, 37, 41);
+}
+.player-miss-ship {
+  background-color: rgb(244, 255, 28);
+}
+
+.cell:hover {
+  opacity: 0.7;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 3rem);
+}
+
+.board:hover {
+  cursor: pointer;
+}
+
+.boards-container {
+  display: flex;
+  gap: 5rem;
+  justify-content: center;
+}

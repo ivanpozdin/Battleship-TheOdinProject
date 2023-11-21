@@ -30,7 +30,7 @@ export default class GameBoard {
   get shipsPlacement() {
     const copyOfShipPlacement = [];
     for (const row of this.#shipsPlacement) {
-      copyOfShipPlacement.push([...row]);
+      copyOfShipPlacement.push(row.map((cell) => cell !== null));
     }
     return copyOfShipPlacement;
   }

@@ -1,13 +1,15 @@
 export default class {
   #enemyGameBoard;
-  constructor(enemyGameBoard) {
+  #gameBoard;
+  constructor(gameBoard, enemyGameBoard) {
+    this.#gameBoard = gameBoard;
     this.#enemyGameBoard = enemyGameBoard;
   }
 
   attack(coords = null) {
     const { x, y } = coords || this.#randomEmptyCell;
 
-    this.#enemyGameBoard.receiveAttack(x, y);
+    return this.#enemyGameBoard.receiveAttack(x, y);
   }
 
   get #randomEmptyCell() {
@@ -22,5 +24,17 @@ export default class {
     const randomIndex = Math.floor(Math.random() * (emptyCells.length - 1));
     const [x, y] = emptyCells[randomIndex];
     return { x, y };
+  }
+
+  get board() {
+    return this.#gameBoard.board;
+  }
+
+  get shipsPlacement() {
+    return this.#gameBoard.shipsPlacement;
+  }
+
+  get allShipsSunk() {
+    return this.#gameBoard.allShipsSunk;
   }
 }
