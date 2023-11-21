@@ -106,16 +106,42 @@ export default class GameBoard {
     const { row, col } = this.#getRowAndColumnFrom(cellNumber);
 
     if (isHorizontal) {
+      const lengthExceedsBorder = col + length > 10;
+
+      const isShipOnEnd =
+        this.#shipsPlacement[row][Math.max(col - 1, 0)] ||
+        this.#shipsPlacement[row][Math.min(col + 1, 9)];
+
+      if (lengthExceedsBorder || isShipOnEnd) return false;
+
       for (let curCol = col; curCol < col + length; curCol++) {
-        if (curCol >= 10) return false;
-        if (this.#shipsPlacement[row][curCol]) return false;
+        const isShipInCell = this.#shipsPlacement[row][curCol];
+
+        const isShipOnSide =
+          this.#shipsPlacement[Math.max(row - 1, 0)][curCol] ||
+          this.#shipsPlacement[Math.min(row + 1, 9)][curCol];
+
+        if (isShipInCell || isShipOnSide) return false;
       }
       return true;
     }
 
+    const lengthExceedsBorder = row + length > 10;
+
+    const isShipOnEnd =
+      this.#shipsPlacement[Math.max(row - 1, 0)][col] ||
+      this.#shipsPlacement[Math.min(row + 1, 9)][col];
+
+    if (lengthExceedsBorder || isShipOnEnd) return false;
+
     for (let curRow = row; curRow < row + length; curRow++) {
-      if (curRow >= 10) return false;
-      if (this.#shipsPlacement[curRow][col]) return false;
+      const isShipInCell = this.#shipsPlacement[curRow][col];
+
+      const isShipOnSide =
+        this.#shipsPlacement[curRow][Math.max(col - 1, 0)] ||
+        this.#shipsPlacement[curRow][Math.min(col + 1, 9)];
+
+      if (isShipInCell || isShipOnSide) return false;
     }
     return true;
   }

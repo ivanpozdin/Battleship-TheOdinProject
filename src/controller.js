@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import _ from "./style.css";
 import GameBoard from "./model/gameboard";
 import Player from "./model/player";
