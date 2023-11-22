@@ -8,8 +8,9 @@ import Player from "./model/player";
 import createStartView from "./view/view";
 import insertPlayerBoard from "./view/insertPlayerBoard";
 import insertOpponentBoard from "./view/insertOpponentBoard";
+import showGameOverMessage from "./view/gameOver";
 
-const timerPromise = async function (ms) {
+const timer = async function (ms) {
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve();
@@ -17,29 +18,34 @@ const timerPromise = async function (ms) {
   );
 };
 
-const moveComputer = async function (computer, player) {
+const moveComputer = async function (computer, player, handleGameOver) {
   computer.isAttacking = true;
-  await timerPromise(500);
+  await timer(500);
   let coords = computer.attack();
 
   while (player.board[coords.x][coords.y] === cellState.hit) {
     insertPlayerBoard(player.shipsPlacement, player.board);
     if (player.allShipsSunk) {
-      alert("Computer won!!!");
+      showGameOverMessage("Computer", handleGameOver);
       return;
     }
-    await timerPromise(500);
+    await timer(500);
     coords = computer.attack();
   }
 
   insertPlayerBoard(player.shipsPlacement, player.board);
   computer.isAttacking = false;
   if (player.allShipsSunk) {
-    alert("Computer won!!!");
+    showGameOverMessage("Computer", handleGameOver);
   }
 };
 
-const handleAttack = async function (player, computer, cellNumber) {
+const handleAttack = async function (
+  player,
+  computer,
+  handleGameOver,
+  cellNumber
+) {
   if (player.allShipsSunk || computer.allShipsSunk || computer.isAttacking) {
     return;
   }
@@ -51,16 +57,17 @@ const handleAttack = async function (player, computer, cellNumber) {
 
   insertOpponentBoard(
     computer.board,
-    handleAttack.bind(null, player, computer)
+    handleAttack.bind(null, player, computer, handleGameOver)
   );
 
   if (computer.allShipsSunk) {
-    alert("You won!!!");
+    showGameOverMessage("You", handleGameOver);
     return;
   }
-  if (computer.board[x][y] === cellState.hit) return;
+  const playerHit = computer.board[x][y] === cellState.hit;
+  if (playerHit) return;
 
-  await moveComputer(computer, player);
+  await moveComputer(computer, player, handleGameOver);
 };
 
 const startGameLoop = function () {
@@ -70,11 +77,22 @@ const startGameLoop = function () {
   const player = new Player(playerGameBoard, computerGameBoard);
   const computer = new Player(computerGameBoard, playerGameBoard);
 
+  const handlePlayAgain = function () {
+    player.reset();
+    computer.reset();
+
+    insertPlayerBoard(player.shipsPlacement, player.board);
+    insertOpponentBoard(
+      computer.board,
+      handleAttack.bind(null, player, computer, handlePlayAgain)
+    );
+  };
+
   createStartView();
   insertPlayerBoard(player.shipsPlacement, player.board);
   insertOpponentBoard(
     computer.board,
-    handleAttack.bind(null, player, computer)
+    handleAttack.bind(null, player, computer, handlePlayAgain)
   );
 };
 

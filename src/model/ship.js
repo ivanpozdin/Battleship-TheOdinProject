@@ -23,4 +23,8 @@ export default class Ship {
     }
     this.#hits++;
   }
+
+  reset() {
+    this.#hits = 0;
+  }
 }

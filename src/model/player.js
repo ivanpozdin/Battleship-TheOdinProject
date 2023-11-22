@@ -40,4 +40,8 @@ export default class {
   get allShipsSunk() {
     return this.#gameBoard.allShipsSunk;
   }
+
+  reset() {
+    this.#gameBoard.reset();
+  }
 }

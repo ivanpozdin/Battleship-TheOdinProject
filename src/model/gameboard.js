@@ -68,7 +68,7 @@ export default class GameBoard {
     return Math.floor(Math.random() * (max - 1));
   }
 
-  get _randomBoolean() {
+  get #randomBoolean() {
     return Math.random() < 0.5;
   }
 
@@ -79,7 +79,7 @@ export default class GameBoard {
       const maxIndex = remainingCells.length - 1;
       let cellIndex = this.#getRandomNumberFrom0ToMax(maxIndex);
       const oldCellIndex = cellIndex;
-      let isHorizontal = this._randomBoolean;
+      let isHorizontal = this.#randomBoolean;
 
       while (
         !this.#canPlaceShipOfLengthInCell(
@@ -165,5 +165,19 @@ export default class GameBoard {
     for (let curRow = row; curRow < row + ship.length; curRow++) {
       this.#shipsPlacement[curRow][col] = ship;
     }
+  }
+
+  reset() {
+    this.#shipsPlacement = Array.from({ length: 10 }, (_) =>
+      Array.from({ length: 10 }, (_, i) => null)
+    );
+
+    this.#ships.forEach((ship) => ship.reset());
+
+    this.#board = Array.from({ length: 10 }, (_) =>
+      Array.from({ length: 10 }, (_, i) => null)
+    );
+
+    this.#randomlyPlaceShips();
   }
 }

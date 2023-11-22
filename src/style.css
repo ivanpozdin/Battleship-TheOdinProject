@@ -56,4 +56,47 @@ h1 {
   display: flex;
   gap: 5rem;
   justify-content: center;
+  position: relative;
+}
+
+.message-container {
+  position: absolute;
+  background-color: white;
+  font-size: 3rem;
+  padding: 2rem 4rem;
+  border-radius: 1rem;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20rem;
+}
+
+.play-again-btn {
+  background-color: #e1464fff;
+  color: white;
+  font-size: 2.5rem;
+
+  border: none;
+  border-radius: 1rem;
+
+  padding: 0.7rem 2rem;
+
+  box-shadow: 0rem 0.7rem 0rem 0rem rgb(77, 115, 138);
+}
+
+.play-again-btn:hover {
+  opacity: 0.7;
+}
+
+.play-again-btn:active {
+  opacity: 1;
+  background-color: rgb(144, 43, 48);
+  transform: translateY(0.5rem);
+  box-shadow: 0rem 0.2rem 0rem 0rem rgb(77, 115, 138);
 }
