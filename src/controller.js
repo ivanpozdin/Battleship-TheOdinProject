@@ -44,14 +44,11 @@ const handleAttack = async function (
   player,
   computer,
   handleGameOver,
-  cellNumber
+  { x, y }
 ) {
   if (player.allShipsSunk || computer.allShipsSunk || computer.isAttacking) {
     return;
   }
-
-  const x = Math.floor(cellNumber / 10);
-  const y = cellNumber % 10;
 
   if (!player.attack({ x, y })) return;
 

@@ -8,7 +8,8 @@ export default function insertPlayerBoard(opponentBoard, handleClickOnCell) {
     for (let y = 0; y < 10; y++) {
       const cellElement = document.createElement("div");
       cellElement.className = "cell";
-      cellElement.dataset.cellNumber = x * 10 + y;
+      cellElement.dataset.x = x;
+      cellElement.dataset.y = y;
 
       if (opponentBoard[x][y] === cellState.hit) {
         cellElement.classList.add("ship-hit-cell");
@@ -26,7 +27,10 @@ export default function insertPlayerBoard(opponentBoard, handleClickOnCell) {
     const cell = event.target.closest(".cell");
     if (!cell) return;
 
-    handleClickOnCell(cell.dataset.cellNumber);
+    handleClickOnCell({
+      x: +cell.dataset.x,
+      y: +cell.dataset.y,
+    });
   });
 
   return boardElement;

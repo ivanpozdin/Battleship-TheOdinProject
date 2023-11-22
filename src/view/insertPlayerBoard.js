@@ -11,7 +11,8 @@ export default function insertPlayerBoard(
     for (let y = 0; y < 10; y++) {
       const cellElement = document.createElement("div");
       cellElement.className = "cell";
-      cellElement.dataset.cellNumber = x * 10 + y;
+      cellElement.dataset.x = x;
+      cellElement.dataset.y = y;
 
       if (shipsPlacementPlayer[x][y]) {
         if (hitMissBoardPlayer[x][y] === cellState.hit) {
