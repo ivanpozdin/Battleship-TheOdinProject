@@ -64,7 +64,7 @@ export default class GameBoard {
     return true;
   }
 
-  #getRandomNumberFrom0ToMax(max) {
+  #randIntFrom0ToMax(max) {
     return Math.floor(Math.random() * (max - 1));
   }
 
@@ -72,90 +72,104 @@ export default class GameBoard {
     return Math.random() < 0.5;
   }
 
+  #getCoordsOfNthFreeCellInShipsPlacement(n) {
+    let currentFreeCellNumber = -1;
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (!this.#shipsPlacement[row][col]) {
+          currentFreeCellNumber++;
+          if (currentFreeCellNumber === n) {
+            return { row, col };
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   #randomlyPlaceShips() {
-    const remainingCells = Array.from({ length: 100 }, (_, i) => i);
+    let remainingCells = 100;
 
     for (const ship of this.#ships) {
-      const maxIndex = remainingCells.length - 1;
-      let cellIndex = this.#getRandomNumberFrom0ToMax(maxIndex);
-      const oldCellIndex = cellIndex;
-      let isHorizontal = this.#randomBoolean;
+      let freeCellNumber = this.#randIntFrom0ToMax(remainingCells - 1);
+      const isHorizontal = this.#randomBoolean;
 
-      while (
-        !this.#canPlaceShipOfLengthInCell(
-          remainingCells[cellIndex],
-          isHorizontal,
-          ship.length
-        )
-      ) {
-        if (cellIndex === oldCellIndex) {
-          isHorizontal = !isHorizontal;
-        }
-        cellIndex = (cellIndex + 1) % remainingCells.length;
+      let coords = this.#getCoordsOfNthFreeCellInShipsPlacement(freeCellNumber);
+
+      while (!this.#canPlaceShipInCell(coords, isHorizontal, ship.length)) {
+        freeCellNumber = (freeCellNumber + 1) % remainingCells;
+        coords = this.#getCoordsOfNthFreeCellInShipsPlacement(freeCellNumber);
       }
-      this.#placeShipInCellNumber(
-        remainingCells[cellIndex],
-        isHorizontal,
-        ship
-      );
-      remainingCells.splice(cellIndex, 1);
+      this.#placeShipInCellNumber(coords, isHorizontal, ship);
+
+      remainingCells -= ship.length;
     }
   }
 
-  #canPlaceShipOfLengthInCell(cellNumber, isHorizontal, length) {
-    const { row, col } = this.#getRowAndColumnFrom(cellNumber);
-
+  #canPlaceShipInCell(coords, isHorizontal, length) {
     if (isHorizontal) {
-      const lengthExceedsBorder = col + length > 10;
+      return this.#canPlaceShipInCellHorizontal(coords, length);
+    }
+    return this.#canPlaceShipInCellVertical(coords, length);
+  }
 
-      const isShipOnEnd =
-        this.#shipsPlacement[row][Math.max(col - 1, 0)] ||
-        this.#shipsPlacement[row][Math.min(col + 1, 9)];
+  #canPlaceShipInCellHorizontal({ row, col }, length) {
+    const lengthExceedsBorder = col + length > 10;
 
-      if (lengthExceedsBorder || isShipOnEnd) return false;
+    const leftEndCol = Math.max(col - 1, 0);
+    const leftEndNotFree = this.#shipsPlacement[row][leftEndCol];
 
-      for (let curCol = col; curCol < col + length; curCol++) {
-        const isShipInCell = this.#shipsPlacement[row][curCol];
+    const rightEndCol = Math.min(col + length, 9);
+    const rightEndNotFree = this.#shipsPlacement[row][rightEndCol];
 
-        const isShipOnSide =
-          this.#shipsPlacement[Math.max(row - 1, 0)][curCol] ||
-          this.#shipsPlacement[Math.min(row + 1, 9)][curCol];
-
-        if (isShipInCell || isShipOnSide) return false;
-      }
-      return true;
+    if (lengthExceedsBorder || leftEndNotFree || rightEndNotFree) {
+      return false;
     }
 
-    const lengthExceedsBorder = row + length > 10;
+    for (let curCol = col; curCol < col + length; curCol++) {
+      const cellNotFree = this.#shipsPlacement[row][curCol];
 
-    const isShipOnEnd =
-      this.#shipsPlacement[Math.max(row - 1, 0)][col] ||
-      this.#shipsPlacement[Math.min(row + 1, 9)][col];
+      const topSideRow = Math.max(row - 1, 0);
+      const topSideNotFree = this.#shipsPlacement[topSideRow][curCol];
 
-    if (lengthExceedsBorder || isShipOnEnd) return false;
+      const bottomSideRow = Math.min(row + 1, 9);
+      const bottomSideNotFree = this.#shipsPlacement[bottomSideRow][curCol];
 
-    for (let curRow = row; curRow < row + length; curRow++) {
-      const isShipInCell = this.#shipsPlacement[curRow][col];
-
-      const isShipOnSide =
-        this.#shipsPlacement[curRow][Math.max(col - 1, 0)] ||
-        this.#shipsPlacement[curRow][Math.min(col + 1, 9)];
-
-      if (isShipInCell || isShipOnSide) return false;
+      if (cellNotFree || topSideNotFree || bottomSideNotFree) {
+        return false;
+      }
     }
     return true;
   }
 
-  #getRowAndColumnFrom(cellNumber) {
-    return {
-      row: Math.floor(cellNumber / 10),
-      col: cellNumber % 10,
-    };
+  #canPlaceShipInCellVertical({ row, col }, length) {
+    const lengthExceedsBorder = row + length > 10;
+
+    const topRow = Math.max(row - 1, 0);
+    const topEndNotFree = this.#shipsPlacement[topRow][col];
+
+    const bottomRow = Math.min(row + length, 9);
+    const bottomEndNotFree = this.#shipsPlacement[bottomRow][col];
+
+    if (lengthExceedsBorder || topEndNotFree || bottomEndNotFree) {
+      return false;
+    }
+
+    for (let curRow = row; curRow < row + length; curRow++) {
+      const cellNotFree = this.#shipsPlacement[curRow][col];
+
+      const leftCol = Math.max(col - 1, 0);
+      const leftSideNotFree = this.#shipsPlacement[curRow][leftCol];
+
+      const rightCol = Math.min(col + 1, 9);
+      const rightSideNotFree = this.#shipsPlacement[curRow][rightCol];
+
+      if (cellNotFree || leftSideNotFree || rightSideNotFree) return false;
+    }
+    return true;
   }
 
-  #placeShipInCellNumber(cellNumber, isHorizontal, ship) {
-    const { row, col } = this.#getRowAndColumnFrom(cellNumber);
-
+  #placeShipInCellNumber({ row, col }, isHorizontal, ship) {
     if (isHorizontal) {
       for (let curCol = col; curCol < col + ship.length; curCol++) {
         this.#shipsPlacement[row][curCol] = ship;
