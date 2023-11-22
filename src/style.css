@@ -53,10 +53,18 @@ h1 {
 }
 
 .boards-container {
-  display: flex;
-  gap: 5rem;
+  display: grid;
+  column-gap: 5rem;
+  grid-template-columns: 30rem 30rem;
   justify-content: center;
   position: relative;
+}
+
+.player-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
 }
 
 .message-container {
@@ -88,6 +96,8 @@ h1 {
   padding: 0.7rem 2rem;
 
   box-shadow: 0rem 0.7rem 0rem 0rem rgb(77, 115, 138);
+
+  cursor: pointer;
 }
 
 .play-again-btn:hover {
