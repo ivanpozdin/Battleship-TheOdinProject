@@ -23,7 +23,7 @@ const moveComputer = async function (computer, player, handleGameOver) {
   await timer(500);
   let coords = computer.attack();
 
-  while (player.board[coords.x][coords.y] === cellState.hit) {
+  while (player.board[coords.row][coords.col] === cellState.hit) {
     insertPlayerBoard(player.shipsPlacement, player.board);
     if (player.allShipsSunk) {
       showGameOverMessage("Computer", handleGameOver);
@@ -44,13 +44,13 @@ const handleAttack = async function (
   player,
   computer,
   handleGameOver,
-  { x, y }
+  { row, col }
 ) {
   if (player.allShipsSunk || computer.allShipsSunk || computer.isAttacking) {
     return;
   }
 
-  if (!player.attack({ x, y })) return;
+  if (!player.attack({ row, col })) return;
 
   insertOpponentBoard(
     computer.board,
@@ -61,7 +61,7 @@ const handleAttack = async function (
     showGameOverMessage("You", handleGameOver);
     return;
   }
-  const playerHit = computer.board[x][y] === cellState.hit;
+  const playerHit = computer.board[row][col] === cellState.hit;
   if (playerHit) return;
 
   await moveComputer(computer, player, handleGameOver);

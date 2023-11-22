@@ -50,16 +50,16 @@ export default class GameBoard {
     return true;
   }
 
-  receiveAttack(x, y) {
-    if (this.#board[x][y]) {
+  receiveAttack(row, col) {
+    if (this.#board[row][col]) {
       return false;
     }
 
-    if (this.#shipsPlacement[x][y]) {
-      this.#shipsPlacement[x][y].hit();
-      this.#board[x][y] = cellState.hit;
+    if (this.#shipsPlacement[row][col]) {
+      this.#shipsPlacement[row][col].hit();
+      this.#board[row][col] = cellState.hit;
     } else {
-      this.#board[x][y] = cellState.miss;
+      this.#board[row][col] = cellState.miss;
     }
     return true;
   }

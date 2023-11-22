@@ -4,16 +4,16 @@ export default function insertPlayerBoard(opponentBoard, handleClickOnCell) {
   const boardElement = document.getElementById("right-board");
   boardElement.innerHTML = "";
 
-  for (let x = 0; x < 10; x++) {
-    for (let y = 0; y < 10; y++) {
+  for (let row = 0; row < 10; row++) {
+    for (let col = 0; col < 10; col++) {
       const cellElement = document.createElement("div");
       cellElement.className = "cell";
-      cellElement.dataset.x = x;
-      cellElement.dataset.y = y;
+      cellElement.dataset.row = row;
+      cellElement.dataset.col = col;
 
-      if (opponentBoard[x][y] === cellState.hit) {
+      if (opponentBoard[row][col] === cellState.hit) {
         cellElement.classList.add("ship-hit-cell");
-      } else if (opponentBoard[x][y] === cellState.miss) {
+      } else if (opponentBoard[row][col] === cellState.miss) {
         cellElement.classList.add("ship-miss-cell");
       } else {
         cellElement.classList.add("empty-cell");
@@ -28,8 +28,8 @@ export default function insertPlayerBoard(opponentBoard, handleClickOnCell) {
     if (!cell) return;
 
     handleClickOnCell({
-      x: +cell.dataset.x,
-      y: +cell.dataset.y,
+      row: +cell.dataset.row,
+      col: +cell.dataset.col,
     });
   });
 

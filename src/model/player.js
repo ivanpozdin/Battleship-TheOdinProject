@@ -9,24 +9,24 @@ export default class {
   }
 
   attack(coords = null) {
-    const { x, y } = coords || this.#randomEmptyCell;
-    if (!this.#enemyGameBoard.receiveAttack(x, y)) return false;
+    const { row, col } = coords || this.#randomEmptyCell;
+    if (!this.#enemyGameBoard.receiveAttack(row, col)) return false;
 
-    return { x, y };
+    return { row, col };
   }
 
   get #randomEmptyCell() {
     const emptyCells = [];
-    for (let x = 0; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
-        if (!this.#enemyGameBoard.board[x][y]) {
-          emptyCells.push([x, y]);
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (!this.#enemyGameBoard.board[row][col]) {
+          emptyCells.push([row, col]);
         }
       }
     }
     const randomIndex = Math.floor(Math.random() * (emptyCells.length - 1));
-    const [x, y] = emptyCells[randomIndex];
-    return { x, y };
+    const [row, col] = emptyCells[randomIndex];
+    return { row, col };
   }
 
   get board() {
