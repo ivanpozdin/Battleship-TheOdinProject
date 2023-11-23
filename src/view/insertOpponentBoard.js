@@ -32,6 +32,4 @@ export default function insertPlayerBoard(opponentBoard, handleClickOnCell) {
       col: +cell.dataset.col,
     });
   });
-
-  return boardElement;
 }

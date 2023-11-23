@@ -10,6 +10,8 @@ import insertPlayerBoard from "./view/insertPlayerBoard";
 import insertOpponentBoard from "./view/insertOpponentBoard";
 import showGameOverMessage from "./view/gameOver";
 
+import insertStartWindow from "./view/userShipsPlacement";
+
 const timer = async function (ms) {
   return new Promise((resolve) =>
     setTimeout(() => {
@@ -94,3 +96,4 @@ const startGameLoop = function () {
 };
 
 startGameLoop();
+// insertStartWindow();

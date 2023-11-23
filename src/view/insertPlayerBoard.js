@@ -31,5 +31,4 @@ export default function insertPlayerBoard(
       boardElement.insertAdjacentElement("beforeend", cellElement);
     }
   }
-  return boardElement;
 }
