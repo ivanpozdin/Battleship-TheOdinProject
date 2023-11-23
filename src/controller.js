@@ -69,22 +69,23 @@ const handleAttack = async function (
   await moveComputer(computer, player, handleGameOver);
 };
 
-const startGameLoop = function () {
-  const playerGameBoard = new GameBoard();
+const startGameLoop = function (addedShips) {
+  const playerGameBoard = new GameBoard(addedShips);
   const computerGameBoard = new GameBoard();
 
   const player = new Player(playerGameBoard, computerGameBoard);
   const computer = new Player(computerGameBoard, playerGameBoard);
 
   const handlePlayAgain = function () {
-    player.reset();
-    computer.reset();
+    insertStartWindow(startGameLoop);
+    // player.reset();
+    // computer.reset();
 
-    insertPlayerBoard(player.shipsPlacement, player.board);
-    insertOpponentBoard(
-      computer.board,
-      handleAttack.bind(null, player, computer, handlePlayAgain)
-    );
+    // insertPlayerBoard(player.shipsPlacement, player.board);
+    // insertOpponentBoard(
+    //   computer.board,
+    //   handleAttack.bind(null, player, computer, handlePlayAgain)
+    // );
   };
 
   createStartView();
@@ -95,5 +96,5 @@ const startGameLoop = function () {
   );
 };
 
-startGameLoop();
-// insertStartWindow();
+// startGameLoop();
+insertStartWindow(startGameLoop);

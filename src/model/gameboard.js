@@ -23,8 +23,16 @@ export default class GameBoard {
     Array.from({ length: 10 }, (_, i) => null)
   );
 
-  constructor() {
-    this.#randomlyPlaceShips();
+  constructor(addedShips) {
+    if (!addedShips) {
+      this.#randomlyPlaceShips();
+      return;
+    }
+    for (let i = 0; i < 10; i++) {
+      const { row, col, isHorizontal } = addedShips[i];
+      const ship = this.#ships[i];
+      this.#placeShipInCellNumber({ row, col }, isHorizontal, ship);
+    }
   }
 
   get shipsPlacement() {
