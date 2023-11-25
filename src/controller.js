@@ -10,7 +10,7 @@ import insertPlayerBoard from "./view/insertPlayerBoard";
 import insertOpponentBoard from "./view/insertOpponentBoard";
 import showGameOverMessage from "./view/gameOver";
 
-import insertStartWindow from "./view/userShipsPlacement";
+import insertStartWindow from "./view/insertStartWindow";
 
 const timer = async function (ms) {
   return new Promise((resolve) =>
