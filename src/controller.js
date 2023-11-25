@@ -78,14 +78,6 @@ const startGameLoop = function (addedShips) {
 
   const handlePlayAgain = function () {
     insertStartWindow(startGameLoop);
-    // player.reset();
-    // computer.reset();
-
-    // insertPlayerBoard(player.shipsPlacement, player.board);
-    // insertOpponentBoard(
-    //   computer.board,
-    //   handleAttack.bind(null, player, computer, handlePlayAgain)
-    // );
   };
 
   createStartView();
@@ -96,5 +88,4 @@ const startGameLoop = function (addedShips) {
   );
 };
 
-// startGameLoop();
 insertStartWindow(startGameLoop);
